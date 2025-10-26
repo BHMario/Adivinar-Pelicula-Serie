@@ -38,21 +38,32 @@ def agregar_peliculas_iniciales():
     cursor.execute("SELECT COUNT(*) FROM peliculas_series")
     if cursor.fetchone()[0] == 0:
         peliculas = [
-            ("Matrix",
-             "Es una película de ciencia ficción",
-             "Protagonizada por Keanu Reeves",
-             "Tiene una famosa pastilla roja y azul"),
+            # Películas clásicas
+            ("Matrix", "Es una película de ciencia ficción", "Protagonizada por Keanu Reeves", "Tiene una famosa pastilla roja y azul"),
+            ("Titanic", "Un barco, amor y tragedia", "Dirigida por James Cameron", "Protagonizada por Leonardo DiCaprio y Kate Winslet"),
+            ("Inception", "Sueños dentro de sueños", "Protagonizada por Leonardo DiCaprio", "Dirigida por Christopher Nolan"),
+            ("Jurassic Park", "Ciencia, dinosaurios y caos", "Basada en una novela de Michael Crichton", "Dirigida por Steven Spielberg"),
+            ("The Matrix", "Realidad simulada y lucha por la libertad", "Protagonizada por Keanu Reeves", "Dirigida por las hermanas Wachowski"),
+            ("The Godfather", "Mafia, familia y poder", "Dirigida por Francis Ford Coppola", "Protagonizada por Marlon Brando y Al Pacino"),
+            ("The Dark Knight", "Un héroe oscuro en una ciudad corrupta", "Protagonizada por Christian Bale", "El villano es el Joker, interpretado por Heath Ledger"),
 
-            ("Stranger Things",
-             "Serie de misterio y ciencia ficción",
-             "Se desarrolla en Hawkins",
-             "Tiene un Demogorgon"),
+            # Series famosas
+            ("Breaking Bad", "Serie sobre un profesor de química", "El protagonista se llama Walter White", "Hace metanfetamina azul"),
+            ("Stranger Things", "Serie de misterio y ciencia ficción", "Se desarrolla en Hawkins", "Tiene un Demogorgon"),
+            ("Game of Thrones", "Reinos, dragones y traición", "Basada en los libros de George R. R. Martin", "Frase famosa: 'Winter is Coming'"),
+            ("Friends", "Un grupo de amigos en Nueva York", "Un sofá en una cafetería", "Personajes: Rachel, Ross, Monica, Chandler, Joey y Phoebe"),
+            ("The Office", "Comedia en una empresa de papel", "Protagonizada por Steve Carell", "Documental falso sobre empleados de oficina"),
+            ("The Mandalorian", "Un cazarrecompensas en una galaxia lejana", "Del universo de Star Wars", "Aparece un personaje adorable apodado 'Baby Yoda'"),
+            ("Sherlock", "Detective moderno en Londres", "Interpretado por Benedict Cumberbatch", "Su compañero es el Dr. Watson"),
 
-            ("Breaking Bad",
-             "Serie sobre un profesor de química",
-             "El protagonista se llama Walter White",
-             "Hace metanfetamina azul"),
+            # Películas animadas
+            ("Toy Story", "Juguetes que cobran vida", "El protagonista es un vaquero", "Su mejor amigo es un astronauta"),
+            ("Finding Nemo", "Un padre busca a su hijo en el océano", "Animación de Pixar", "El hijo es un pez payaso"),
+            ("Shrek", "Un ogro y una princesa poco convencional", "Acompañado por un burro parlante", "Protagonizada por Mike Myers y Eddie Murphy"),
+            ("Frozen", "Hermanas, hielo y una canción muy famosa", "De Disney", "Frase clave: 'Let it go'"),
+            ("Coco", "Un niño viaja al mundo de los muertos", "Inspirada en el Día de Muertos mexicano", "Protagonizada por Miguel")
         ]
+
         cursor.executemany(
             "INSERT INTO peliculas_series (titulo, pista1, pista2, pista3) VALUES (?, ?, ?, ?)",
             peliculas
