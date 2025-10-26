@@ -12,6 +12,7 @@ class MenuFrame(tk.Frame):
 
         self.crear_boton("🎮 Jugar una nueva partida", master.mostrar_juego)
         self.crear_boton("📜 Ver mi historial", master.mostrar_historial)
+        self.crear_boton("🔄 Cambiar usuario", self.logout)
         self.crear_boton("🚪 Salir", master.destroy)
 
     def crear_boton(self, texto, comando):
@@ -19,3 +20,7 @@ class MenuFrame(tk.Frame):
                   font=("Arial", 12, "bold"), bg="#5E60CE", fg="white",
                   activebackground="#4E50B5", relief="flat", cursor="hand2",
                   width=25).pack(pady=10)
+
+    def logout(self):
+        self.master.usuario = None
+        self.master.mostrar_login()

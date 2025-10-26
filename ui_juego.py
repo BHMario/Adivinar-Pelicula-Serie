@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import messagebox
 from conection import obtener_pelicula_aleatoria, guardar_historial
 
 class JuegoFrame(tk.Frame):
@@ -24,6 +23,11 @@ class JuegoFrame(tk.Frame):
                                      font=("Arial", 13, "bold"), bg="#2D2D3A", fg="#FFD700")
         self.puntos_label.pack()
 
+        # Label de feedback (aciertos/fallos/pistas)
+        self.feedback_label = tk.Label(self, text="", font=("Arial", 14, "bold"),
+                                       bg="#2D2D3A", fg="#FFD700")
+        self.feedback_label.pack(pady=5)
+
         botones_frame = tk.Frame(self, bg="#2D2D3A")
         botones_frame.pack(pady=10)
 
@@ -35,29 +39,40 @@ class JuegoFrame(tk.Frame):
 
         self.crear_boton(self, "✅ Adivinar", self.adivinar).pack(pady=10)
 
+    # Feedback visual
+    def mostrar_feedback(self, mensaje, color="#00FF00", duracion=1500):
+        self.feedback_label.config(text=mensaje, fg=color)
+        self.after(duracion, lambda: self.feedback_label.config(text=""))
+
+    # Funciones de juego
     def pedir_pista(self):
         if self.pistas_usadas < len(self.pistas):
-            self.pista_label.config(text=self.pistas[self.pistas_usadas])
+            pista = self.pistas[self.pistas_usadas]
+            self.pista_label.config(text=pista)
+            self.mostrar_feedback(f"Pista {self.pistas_usadas + 1}", color="#FFD700")
+
             if self.pistas_usadas >= 1:
                 self.puntos -= 5
                 self.puntos_label.config(text=f"Puntos: {self.puntos}")
+
             self.pistas_usadas += 1
         else:
-            messagebox.showinfo("Sin pistas", "Ya no hay más pistas disponibles.")
+            self.mostrar_feedback("Ya no hay más pistas.", color="#FF4500")
 
     def adivinar(self):
         intento = self.entrada.get().strip()
         if not intento:
-            messagebox.showwarning("Atención", "Debes escribir una respuesta.")
+            self.mostrar_feedback("Debes escribir una respuesta.", color="#FF4500")
             return
 
         if intento.lower() == self.actual[1].lower():
-            messagebox.showinfo("¡Correcto!", f"¡Has acertado '{self.actual[1]}'!\nPuntuación: {self.puntos}")
+            self.mostrar_feedback(f"¡Has acertado '{self.actual[1]}'!", color="#00FF00")
             guardar_historial(self.master.usuario, self.actual[1], self.puntos)
-            self.master.mostrar_menu()
+            self.after(1500, self.master.mostrar_menu)
         else:
-            messagebox.showerror("Incorrecto", "No es correcto. ¡Sigue intentando!")
+            self.mostrar_feedback("¡Incorrecto! Sigue intentando.", color="#FF4500")
 
+    # Botón estilizado
     def crear_boton(self, parent, texto, comando):
         return tk.Button(parent, text=texto, command=comando,
                          font=("Arial", 12, "bold"),
